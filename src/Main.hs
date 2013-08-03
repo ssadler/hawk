@@ -1,27 +1,33 @@
-{-# LANGUAGE OverloadedStrings #-}
+{-# LANGUAGE DeriveDataTypeable #-}
 
-import           Prelude hiding (break)
+module Main where
 
-import           Control.Category ((>>>))
-import           Control.Lens
-import           Data.ByteString.Lazy.Char8 (ByteString, break)
-import qualified Data.ByteString.Lazy.Char8 as B
-import           Data.List hiding (lines, unlines, break)
-import           Data.Maybe
-import qualified Data.Map as Map
-import           Data.Ord
-import           Data.Tuple
+import System.Console.CmdArgs
+import System.IO.Temp
+import System.Posix.Process
 
-import           HSL.Json
-import           HSL.Types
-import           HSL.Stdlib
+import Text.Printf
 
 
-%s
+template = "/Users/scott/Code/hsl/template.hs"
 
-p = %s
 
-run :: Renderable a => ([ByteString] -> a) -> IO ()
-run f = B.getContents >>= mapM_ B.putStrLn . render . f . B.lines
+data HSL = HSL { interpreted :: Bool
+               , setup :: String
+               , evaluate :: String
+               } deriving (Show, Data, Typeable)
 
-main = run p
+
+main :: IO ()
+main = withSystemTempDirectory "hsl" $ \tmp -> do
+    args <- cmdArgs HSL { interpreted = def
+                        , setup = def
+                        , evaluate = def &= argPos 0
+                        }
+    tpl <- readFile template
+    let binhs = tmp ++ "/Main.hs"
+    writeFile binhs $ printf tpl (setup args) (evaluate args)
+    executeFile "runghc" True ["-isrc", binhs] Nothing
+
+
+
