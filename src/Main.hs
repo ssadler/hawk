@@ -3,8 +3,7 @@
 import           Prelude hiding (break)
 
 import           Control.Category ((>>>))
-import           Control.Lens
-import qualified Data.ByteString.Lazy.Char8 as B
+import qualified Data.Text as T
 import           Data.Char
 import           Data.List hiding (lines, unlines, break)
 import           Data.Maybe
@@ -13,15 +12,14 @@ import           Data.Ord
 import           Data.Tuple
 
 import           HSL.Json
-import           HSL.Types
 import           HSL.Stdlib
+import           HSL.IO
+import           HSL.Types
 
 
 %s
 
 p = %s
 
-run :: Renderable a => ([B.ByteString] -> a) -> IO ()
-run f = B.getContents >>= mapM_ B.putStrLn . render . f . B.lines
+main = runLineProcessor p
 
-main = run p

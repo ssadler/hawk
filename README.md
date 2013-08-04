@@ -18,9 +18,9 @@ Poor man's [`tac`](http://www.gnu.org/software/coreutils/manual/html_node/tac-in
     2
     1
 
-The input is a `[ByteString]`, an array of lines.
+The input is a `[Text]`, a list of lines.
 
-    > echo '!LSH olleH'  | hsl 'fmap B.reverse'
+    > echo '!LSH olleH'  | hsl 'fmap T.reverse'
     Hello HSL!
 
 The output is also an array of lines... but it could also be an array of tuples, in which case the tuples are displayed as tab-separated columns.
@@ -31,18 +31,18 @@ The output is also an array of lines... but it could also be an array of tuples,
 
 Or a single value...
 
-    > printf 'literary\ncheeseburger' | hsl 'maximumBy (comparing B.length) . concatMap B.words'
+    > printf 'literary\ncheeseburger' | hsl 'maximumBy (comparing T.length) . concatMap T.words'
     cheeseburger
 
 Full Haskell syntax is supported. Go crazy!
 
-    > printf "hello\nworld\n" | hsl 'take 2 . repeat . filter (B.isPrefixOf "w")'
+    > printf "hello\nworld\n" | hsl 'take 2 . repeat . filter (T.isPrefixOf "w")'
     world
     world
 
 A few builtins, such as `hist`, are provided for convenience. 
 
-    > cat src/HSL/* | hsl 'take 5 . reverse . hist . B.words . B.concat'
+    > cat src/HSL/* | hsl 'take 5 . reverse . hist . T.words . T.concat'
     41	->
     37	=
     20	where
@@ -70,7 +70,7 @@ More concretely, if you have a file with one JSON expression per line, `json` le
     2008
     2011
 
-The `i` argument specifies the type of the result. `i` (Int), `s` (ByteString)
+The `i` argument specifies the type of the result. `i` (Int), `t` (Text)
 and `f` (Float) are provided for this purpose. The following are equivalent:
 
     echo '[[1,2],[3,4]]' | hsl 'json (undefined::[(Int,Int)]) ""'
@@ -83,7 +83,7 @@ and `f` (Float) are provided for this purpose. The following are equivalent:
 
 The empty string in the above example is an empty path, referring to the entire JSON expression. The general syntax for paths is illustrated in the following example:
 
-    > echo '{"a":{"b":["Hello","World"]}}' | hsl 'json s "a b 0"'
+    > echo '{"a":{"b":["Hello","World"]}}' | hsl 'json t "a b 0"'
     Hello
 
 If you need to extract more than one value per line, use `json2` or `json3`.

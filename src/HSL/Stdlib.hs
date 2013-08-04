@@ -2,10 +2,10 @@
 module HSL.Stdlib (groupOn, sortOn, hist, tabbed) where
 
 
-import qualified Data.ByteString.Lazy.Char8 as B
 import           Data.Ord (comparing)
 import           Data.List (groupBy, sortBy)
 import qualified Data.Map as Map
+import qualified Data.Text as T
 import           Data.Tuple (swap)
 
 import           HSL.Types
@@ -24,6 +24,6 @@ hist = sortOn fst . map swap . Map.toList . foldl inc Map.empty
   where inc = (\m v -> Map.insertWith (+) v 1 m)
 
 
-tabbed :: Datum a => a -> [B.ByteString] -> [a]
-tabbed _ = map (parseMany . B.split '\t')
+tabbed :: Datum a => a -> [T.Text] -> [a]
+tabbed _ = map (parseMany . T.split (=='\t'))
 
