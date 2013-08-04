@@ -31,6 +31,7 @@ class Datum a where
 
 instance Datum Int where
     bs = T.pack . show
+    parse = read . T.unpack
 
 instance Datum Int64 where
     bs = T.pack . show

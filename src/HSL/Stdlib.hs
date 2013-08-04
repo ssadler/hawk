@@ -1,5 +1,5 @@
 
-module HSL.Stdlib (groupOn, sortOn, hist, tabbed) where
+module HSL.Stdlib (groupOn, sortOn, hist, tabs) where
 
 
 import           Data.Ord (comparing)
@@ -24,6 +24,6 @@ hist = sortOn fst . map swap . Map.toList . foldl inc Map.empty
   where inc = (\m v -> Map.insertWith (+) v 1 m)
 
 
-tabbed :: Datum a => a -> [T.Text] -> [a]
-tabbed _ = map (parseMany . T.split (=='\t'))
+tabs :: Datum a => a -> [T.Text] -> [a]
+tabs _ = map (parseMany . T.split (=='\t'))
 
