@@ -42,12 +42,12 @@ Full Haskell syntax is supported. Go crazy!
 
 A few builtins, such as `hist`, are provided for convenience. 
 
-    > cat src/HSL/* | hsl 'take 5 . reverse . hist . T.words . T.concat'
-    41	->
-    37	=
-    20	where
-    17	tb
-    17	Scalar
+    cat src/HSL/*.hs | hsl 'take 5 . sortBy (flip $ comparing snd) . hist . concatMap T.words'
+    =	56
+    ->	50
+    ::	24
+    Datum	21
+    b,	21
 
 You can add your own builtins to `src/HSL/Stdlib.hs`. Send us yours in a pull request!
 
@@ -91,6 +91,16 @@ If you need to extract more than one value per line, use `json2` or `json3`.
     > echo '{"born":1938, "age":75}' | hsl 'fmap (uncurry (+)) . json2 (i,i) "born" "age"'
     2013
 
+
+Tabular input
+=============
+
+The function `tabs` is provided to read tabular input. It works just like `json`,
+except you don't need to provide keys:
+
+    > printf 'a      10\nb   11\na   12' | hsl 'tally . tabs (t,i)'
+    a	22
+    b	11
 
 Installing
 ==========

@@ -1,5 +1,5 @@
 
-module HSL.Stdlib (groupOn, sortOn, hist, tabs) where
+module HSL.Stdlib (groupOn, sortOn, hist, tabs, tally) where
 
 
 import           Data.Ord (comparing)
@@ -19,9 +19,13 @@ sortOn :: (Ord b) => (a -> b) -> [a] -> [a]
 sortOn f = sortBy (\a b -> compare (f a) (f b))
 
 
-hist :: (Ord a) => [a] -> [(Int, a)]
-hist = sortOn fst . map swap . Map.toList . foldl inc Map.empty
-  where inc = (\m v -> Map.insertWith (+) v 1 m)
+tally :: (Ord a, Num b) => [(a, b)] -> [(a, b)]
+tally = Map.toAscList . foldl inc Map.empty
+  where inc = (\m (k, v) -> Map.insertWith (+) k v m)
+
+
+hist :: (Ord a) => [a] -> [(a, Int)]
+hist = tally . flip zip (repeat 1)
 
 
 tabs :: Datum a => a -> [T.Text] -> [a]
