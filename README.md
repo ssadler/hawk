@@ -95,7 +95,7 @@ If you need to extract more than one value per line, use `json2` or `json3`.
 Tabular input
 =============
 
-The function `tabs` is provided to read tabular input. It works just like `json`,
+The function `tabs` is provided to read \t separated input. It works just like `json`,
 except you don't need to provide keys:
 
     > printf 'a      10\nb   11\na   12' | hsl 'tally . tabs (t,i)'
