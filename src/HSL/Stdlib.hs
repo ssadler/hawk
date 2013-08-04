@@ -1,5 +1,5 @@
 
-module HSL.Stdlib (groupOn, sortOn, hist, tabs, tally) where
+module HSL.Stdlib (groupOn, sortOn, sortOnR, hist, tabs, tally) where
 
 
 import           Data.Ord (comparing)
@@ -16,7 +16,11 @@ groupOn f = groupBy (\a b -> f a == f b)
 
 
 sortOn :: (Ord b) => (a -> b) -> [a] -> [a]
-sortOn f = sortBy (\a b -> compare (f a) (f b))
+sortOn f = sortBy (comparing f)
+
+
+sortOnR :: (Ord b) => (a -> b) -> [a] -> [a]
+sortOnR f = sortBy (flip $ comparing f)
 
 
 tally :: (Ord a, Num b) => [(a, b)] -> [(a, b)]

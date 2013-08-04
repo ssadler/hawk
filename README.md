@@ -42,7 +42,7 @@ Full Haskell syntax is supported. Go crazy!
 
 A few builtins, such as `hist`, are provided for convenience. 
 
-    cat src/HSL/*.hs | hsl 'take 5 . sortBy (flip $ comparing snd) . hist . concatMap T.words'
+    cat src/HSL/*.hs | hsl 'take 5 . sortOnR snd . hist . concatMap T.words'
     =	56
     ->	50
     ::	24
