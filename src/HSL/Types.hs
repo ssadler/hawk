@@ -33,6 +33,10 @@ instance Datum Int where
     bs = T.pack . show
     parse = read . T.unpack
 
+instance Datum Float where
+    bs = T.pack . show
+    parse = read . T.unpack
+
 instance Datum Int64 where
     bs = T.pack . show
 
