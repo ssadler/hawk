@@ -1,5 +1,5 @@
 
-module HSL.Stdlib (groupOn, sortOn, sortOnR, hist, tabs, tally) where
+module HSL.Stdlib (groupOn, sortOn, sortOnR, hist, tabs, tally, logScale) where
 
 
 import           Data.Ord (comparing)
@@ -35,3 +35,6 @@ hist = tally . flip zip (repeat 1)
 tabs :: Datum a => a -> [T.Text] -> [a]
 tabs _ = map (parseMany . T.split (=='\t'))
 
+
+logScale :: (Integral a) => a -> a
+logScale = (2^) . truncate . logBase 2 . fromIntegral
