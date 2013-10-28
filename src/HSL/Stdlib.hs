@@ -36,7 +36,7 @@ tabs :: Datum a => a -> [T.Text] -> [a]
 tabs _ = map (parseMany . T.split (=='\t'))
 
 commas :: Datum a => a -> [T.Text] -> [a]
-commas _ = map (parseMany . T.split (=='\t'))
+commas _ = map (parseMany . T.split (==','))
 
 logScale :: (Integral a) => a -> a
 logScale = (2^) . truncate . logBase 2 . fromIntegral
